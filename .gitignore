@@ -1,0 +1,7 @@
+*.history
+*.py
+*.launch.py
+*.launch
+*.world
+*.yaml
+*.json
