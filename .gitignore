@@ -5,3 +5,5 @@
 *.world
 *.yaml
 *.json
+data_logger/_pycache_/
+data_logger/__pycache__/
