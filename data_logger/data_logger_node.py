@@ -84,7 +84,8 @@ class DataLogger(Node):
 
         label = {
             "distance": self.ground_truth_distance if self.ground_truth_distance is not None else -1.0,
-            "angle": self.ground_truth_angle if self.ground_truth_angle is not None else -1.0
+            "angle": self.ground_truth_angle if self.ground_truth_angle is not None else -1.0,
+            "scene_condition": self.scene_condition
         }
 
         with open(label_path, 'w') as f:
