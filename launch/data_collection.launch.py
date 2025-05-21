@@ -1,36 +1,66 @@
-from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch.actions import TimerAction
+
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, TimerAction
+from launch.substitutions import LaunchConfiguration
+
 
 def generate_launch_description():
-    return LaunchDescription([
-        # 1. Launch GroundTruthListener node first
-        Node(
-            package='data_logger',
-            executable='ground_truth_listener',
-            name='ground_truth_listener',
-            output='screen',
-            parameters=[{'obstacle_name': ''}]
-        ),
+    # Declare launch arguments
+    scene_condition_arg = DeclareLaunchArgument(
+        "scene_condition",
+        default_value="default_scene",
+        description="Scene condition name",
+    )
+    save_dir_arg = DeclareLaunchArgument(
+        "save_dir", default_value="sensor_data", description="Directory to save data"
+    )
+    obstacle_name_arg = DeclareLaunchArgument(
+        "obstacle_name", default_value="", description="Name of the obstacle (optional)"
+    )
 
-        # 2. Launch DataLogger node
-        Node(
-            package='data_logger',
-            executable='data_logger_node',
-            name='data_logger',
-            output='screen',
-        ),
-
-        # 3. Delay SceneSpawner slightly to ensure GroundTruthListener is up
-        TimerAction(
-            period=2.0,  # Wait 2 seconds before launching scene_spawner
-            actions=[
-                Node(
-                    package='data_logger',  # Replace with actual package name
-                    executable='scene_spawner',
-                    name='scene_spawner',
-                    output='screen',
-                )
-            ]
-        )
-    ])
+    return LaunchDescription(
+        [
+            scene_condition_arg,
+            save_dir_arg,
+            obstacle_name_arg,
+            # 1. GroundTruthListener
+            Node(
+                package="data_logger",
+                executable="ground_truth_listener",
+                name="ground_truth_listener",
+                output="screen",
+                parameters=[
+                    {"obstacle_name": LaunchConfiguration("obstacle_name")},
+                    {"scene_condition": LaunchConfiguration("scene_condition")},
+                ],
+            ),
+            # 2. DataLogger
+            Node(
+                package="data_logger",
+                executable="data_logger_node",
+                name="data_logger",
+                output="screen",
+                parameters=[
+                    {"scene_condition": LaunchConfiguration("scene_condition")},
+                    {"save_dir": LaunchConfiguration("save_dir")},
+                    {"obstacle_name": LaunchConfiguration("obstacle_name")},
+                ],
+            ),
+            # 3. Delayed SceneSpawner
+            TimerAction(
+                period=2.0,
+                actions=[
+                    Node(
+                        package="data_logger",
+                        executable="scene_spawner",
+                        name="scene_spawner",
+                        output="screen",
+                        parameters=[
+                            {"obstacle_name": LaunchConfiguration("obstacle_name")}
+                        ],
+                    )
+                ],
+            ),
+        ]
+    )
