@@ -42,8 +42,9 @@ class SceneSpawner(Node):
             "Transparent_Cone",
             "Mesh",
             "Mesh round",
+            "Transparent_sheet",
         ]
-            # "Transparent_sheet", #add this back in normal_obstacles when we want normal obstacles
+        # "Transparent_sheet", #add this back in normal_obstacles when we want normal obstacles
 
         self.large_obstacles = [
             "Hatchback",
@@ -98,7 +99,7 @@ class SceneSpawner(Node):
     def run_sequence(self):
         self.wait_for_services()
 
-        for i in range(25):  # Outer loop to iterate twice
+        for i in range(18):  # Outer loop to iterate 18 times
             for idx, obstacle in enumerate(self.obstacles):  # Use enumerate for index
                 self.get_logger().info(
                     f"\n🔄 Iteration {i + 1} — Spawning {obstacle}..."

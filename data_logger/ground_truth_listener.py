@@ -21,17 +21,16 @@ class GroundTruthListener(Node):
         # ✅ NEW: Publish ground truth ready flag
         self.gt_ready_pub = self.create_publisher(Bool, "/ground_truth_ready", 10)
 
-        # ✅ NEW: Publish ground truth data in JSON format
+        # ✅ NEW: Publish ground truth data
         self.gt_data_pub = self.create_publisher(String, "/ground_truth_data", 10)
 
-        # Declare a dynamic obstacle_name parameter
-        self.declare_parameter("obstacle_name")
+        # Declare parameters
+        self.declare_parameter("obstacle_name", "unknown")
+        self.declare_parameter("scene_condition", "unknown")
+
         self.obstacle_name = (
             self.get_parameter("obstacle_name").get_parameter_value().string_value
         )
-
-        # ✅ Add scene_condition parameter
-        self.declare_parameter("scene_condition", "unknown")
         self.scene_condition = (
             self.get_parameter("scene_condition").get_parameter_value().string_value
         )
@@ -51,17 +50,9 @@ class GroundTruthListener(Node):
             Float32, "/ground_truth/distance", 10
         )
         self.angle_publisher = self.create_publisher(Float32, "/ground_truth/angle", 10)
-        self.obstacle_name_publisher = self.create_publisher(
-            String, "/obstacle_name", 10
-        )
 
         # Monitor parameter changes
         self.add_on_set_parameters_callback(self.parameter_callback)
-
-        self.current_obstacle = ""
-        self.create_subscription(
-            String, "/current_obstacle", self.obstacle_callback, 10
-        )
 
     def parameter_callback(self, params):
         for param in params:
@@ -74,6 +65,14 @@ class GroundTruthListener(Node):
                     f"🔄 Obstacle name updated to: {self.obstacle_name}"
                 )
                 self.last_obstacle_name = None  # reset sync status
+            elif (
+                param.name == "scene_condition"
+                and param.type_ == rclpy.Parameter.Type.STRING
+            ):
+                self.scene_condition = param.value
+                self.get_logger().info(
+                    f"🔄 Scene condition updated to: {self.scene_condition}"
+                )
         return SetParametersResult(successful=True)
 
     def trigger_callback(self, msg):
@@ -85,8 +84,11 @@ class GroundTruthListener(Node):
             if not self.obstacle_name:
                 return
 
+            if self.obstacle_name not in msg.name:
+                return
+
             # Phase 1: Obstacle confirmation
-            if self.last_obstacle_name != self.obstacle_name and self.obstacle_name in msg.name:
+            if self.last_obstacle_name != self.obstacle_name:
                 self.last_obstacle_name = self.obstacle_name
                 self.get_logger().info(
                     f"🟢 Obstacle '{self.obstacle_name}' visible in model_states. Sending ready signal."
@@ -99,8 +101,15 @@ class GroundTruthListener(Node):
                 return
 
             robot_idx = msg.name.index(self.robot_name)
+            obstacle_idx = msg.name.index(self.obstacle_name)
+
             robot_pose = msg.pose[robot_idx]
+            obstacle_pose = msg.pose[obstacle_idx]
+
             robot_pos = np.array([robot_pose.position.x, robot_pose.position.y])
+            obstacle_pos = np.array(
+                [obstacle_pose.position.x, obstacle_pose.position.y]
+            )
 
             quaternion = (
                 robot_pose.orientation.x,
@@ -111,44 +120,38 @@ class GroundTruthListener(Node):
             _, _, yaw = euler_from_quaternion(quaternion)
             robot_forward = np.array([np.cos(yaw), np.sin(yaw)])
 
-            # ✅ Check for Transparent_sheet specifically
-            if "Transparent_sheet" in msg.name:
-                transparent_idx = msg.name.index("Transparent_sheet")
-                transparent_pose = msg.pose[transparent_idx]
-                transparent_pos = np.array([transparent_pose.position.x, transparent_pose.position.y])
+            vector_to_obstacle = obstacle_pos - robot_pos
+            distance = np.linalg.norm(vector_to_obstacle)
 
-                vector_to_transparent = transparent_pos - robot_pos
-                distance = np.linalg.norm(vector_to_transparent)
+            if distance == 0:
+                return
 
-                if distance > 0:
-                    direction = vector_to_transparent / distance
-                    angle_deg = np.degrees(np.arccos(np.clip(np.dot(robot_forward, direction), -1.0, 1.0)))
+            direction_to_obstacle = vector_to_obstacle / distance
+            dot_product = np.dot(robot_forward, direction_to_obstacle)
+            angle_deg = np.degrees(np.arccos(np.clip(dot_product, -1.0, 1.0)))
 
-                    if angle_deg < 45:
-                        self.distance_publisher.publish(Float32(data=float(distance)))
-                        self.angle_publisher.publish(Float32(data=float(angle_deg)))
+            if angle_deg < 45:
+                self.distance_publisher.publish(Float32(data=float(distance)))
+                self.angle_publisher.publish(Float32(data=float(angle_deg)))
 
-                        ground_truth_data = {
-                            "distance": float(distance),
-                            "angle": float(angle_deg),
-                            "scene_condition": self.scene_condition,
-                            "obstacle_name": "Transparent_sheet",
-                        }
-                        self.gt_data_pub.publish(String(data=json.dumps(ground_truth_data)))
-                        self.gt_ready_pub.publish(Bool(data=True))
+                ground_truth_data = {
+                    "distance": float(distance),
+                    "angle": float(angle_deg),
+                    "scene_condition": self.scene_condition,
+                    "obstacle_name": self.obstacle_name,
+                }
+                self.gt_data_pub.publish(String(data=json.dumps(ground_truth_data)))
 
-                        self.get_logger().info(
-                            f"✅ Transparent GT — Distance: {distance:.3f} m, Angle: {angle_deg:.1f}°"
-                        )
+                self.get_logger().info(
+                    f"✅ Ground truth published for {self.obstacle_name} — Distance: {distance:.3f} m, Angle: {angle_deg:.1f}°"
+                )
 
-            self.trigger_active = False
+                # ✅ NEW: Confirm that valid GT is ready
+                self.gt_ready_pub.publish(Bool(data=True))
 
+            self.trigger_active = False  # Reset trigger
         except ValueError:
             return
-
-
-    def obstacle_callback(self, msg):
-        self.current_obstacle = msg.data
 
 
 def main(args=None):
