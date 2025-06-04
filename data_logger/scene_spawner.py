@@ -43,7 +43,7 @@ class SceneSpawner(Node):
             "Mesh",
             "Mesh round",
         ]
-            # "Transparent_sheet", #add this back in normal_obstacles when we want normal obstacles
+        # "Transparent_sheet", #add this back in normal_obstacles when we want normal obstacles
 
         self.large_obstacles = [
             "Hatchback",
@@ -77,6 +77,15 @@ class SceneSpawner(Node):
             self.get_parameter("obstacle_name").get_parameter_value().string_value
         )
 
+        # New parameter for transparency mode
+        self.declare_parameter("transparent_mode", False)
+        self.transparent_mode = (
+            self.get_parameter("transparent_mode").get_parameter_value().bool_value
+        )
+
+        # Track spawned objects for cleanup
+        self.spawned_objects = []
+
         self.obstacle_pub = self.create_publisher(String, "/current_obstacle", 10)
 
         self.run_sequence()
@@ -104,25 +113,46 @@ class SceneSpawner(Node):
                     f"\n🔄 Iteration {i + 1} — Spawning {obstacle}..."
                 )
 
-                # ✅ Delete previously spawned obstacle (only after first inner iteration)
-                if i > 0 or idx > 0:
-                    last_obstacle = (
-                        self.obstacles[idx - 1] if idx > 0 else self.obstacles[-1]
+                # ✅ Delete previously spawned obstacles
+                self.cleanup_spawned_objects()
+
+                if self.transparent_mode or obstacle == "transparent":
+                    # Special mode: spawn Transparent_sheet with another random obstacle
+                    self.get_logger().info(
+                        f"🔍 Transparent mode active - spawning Transparent_sheet with {obstacle}"
                     )
-                    self.get_logger().info(f"🧹 Removing previous: {last_obstacle}")
-                    self.delete_model(last_obstacle)
 
-                # ✅ Spawn new obstacle
-                self.spawn_model(obstacle)
+                    # Spawn the transparent sheet
+                    self.spawn_transparent_sheet()
 
-                # ✅ Set ground truth listener parameter
-                self.set_ground_truth_obstacle_name(obstacle)
+                    # Spawn the regular obstacle
+                    self.spawn_model(obstacle)
 
-                # ✅ Set obstacle_name parameter on data_logger
-                self.get_logger().info(
-                    f"🛠 Setting data_logger parameter: obstacle_name = {obstacle}"
-                )
-                self.set_logger_obstacle_param(obstacle)
+                    # Add both to tracking list
+                    self.spawned_objects.extend(["Transparent_sheet", obstacle])
+
+                    # ✅ Set ground truth listener parameter to Transparent_sheet
+                    self.set_ground_truth_obstacle_name("Transparent_sheet")
+
+                    # ✅ Set obstacle_name parameter on data_logger
+                    self.get_logger().info(
+                        "🛠 Setting data_logger parameter: obstacle_name = Transparent_sheet"
+                    )
+                    self.set_logger_obstacle_param("Transparent_sheet")
+                else:
+                    # Regular mode: spawn single obstacle
+                    # ✅ Spawn new obstacle
+                    self.spawn_model(obstacle)
+                    self.spawned_objects.append(obstacle)
+
+                    # ✅ Set ground truth listener parameter
+                    self.set_ground_truth_obstacle_name(obstacle)
+
+                    # ✅ Set obstacle_name parameter on data_logger
+                    self.get_logger().info(
+                        f"🛠 Setting data_logger parameter: obstacle_name = {obstacle}"
+                    )
+                    self.set_logger_obstacle_param(obstacle)
 
                 self.get_logger().info("⏳ Waiting for scene to stabilize...")
                 time.sleep(10)
@@ -130,15 +160,62 @@ class SceneSpawner(Node):
                 self.get_logger().info("📸 Triggering data collection...")
                 self.trigger_pub.publish(Float32(data=1.0))
 
-                self.obstacle_pub.publish(String(data=obstacle))
+                # Publish the primary obstacle name
+                primary_obstacle = (
+                    "Transparent_sheet"
+                    if self.transparent_mode or obstacle == "transparent"
+                    else obstacle
+                )
+                self.obstacle_pub.publish(String(data=primary_obstacle))
 
                 time.sleep(2)
 
-        # ✅ Clean up last obstacle after all loops
-        self.get_logger().info("🧹 Cleaning up last spawned obstacle...")
-        self.delete_model(self.obstacles[-1])
+        # ✅ Clean up last obstacles after all loops
+        self.cleanup_spawned_objects()
 
         self.get_logger().info("✅ All samples collected. Process complete.")
+
+    def cleanup_spawned_objects(self):
+        """Delete all currently spawned objects"""
+        for obj in self.spawned_objects:
+            self.get_logger().info(f"🧹 Removing: {obj}")
+            self.delete_model(obj)
+        self.spawned_objects = []
+
+    def spawn_transparent_sheet(self):
+        """Spawn a transparent sheet in front of the robot"""
+        req = SpawnEntity.Request()
+        req.name = "Transparent_sheet"
+        req.xml = open(
+            f"{self.model_path_base}/Transparent_sheet/model.sdf", "r"
+        ).read()
+        req.robot_namespace = "Transparent_sheet"
+        req.reference_frame = "world"
+
+        # Position within 1m of the robot, in front
+        radius = random.uniform(0.5, 1.0)
+        angle = random.uniform(-math.pi / 10, math.pi / 10)  # Narrow angle in front
+
+        req.initial_pose.position.x = radius * math.cos(angle)
+        req.initial_pose.position.y = radius * math.sin(angle)
+        req.initial_pose.position.z = 0.0
+
+        # Random orientation
+        yaw = random.uniform(0, math.pi / 3)
+        quat = quaternion_from_euler(0, 0, yaw)
+        req.initial_pose.orientation = Quaternion(
+            x=quat[0], y=quat[1], z=quat[2], w=quat[3]
+        )
+
+        future = self.spawn_client.call_async(req)
+        rclpy.spin_until_future_complete(self, future)
+        if future.result() is not None:
+            self.get_logger().info(
+                f"Spawned Transparent_sheet at x={req.initial_pose.position.x:.2f}, "
+                f"y={req.initial_pose.position.y:.2f}, distance={radius:.2f}m, yaw={math.degrees(yaw):.1f}°"
+            )
+        else:
+            self.get_logger().error("Failed to spawn Transparent_sheet")
 
     def spawn_model(self, model_name):
         req = SpawnEntity.Request()

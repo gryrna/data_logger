@@ -18,12 +18,18 @@ def generate_launch_description():
     obstacle_name_arg = DeclareLaunchArgument(
         "obstacle_name", default_value="", description="Name of the obstacle (optional)"
     )
+    transparent_mode_arg = DeclareLaunchArgument(
+        "transparent_mode",
+        default_value="False",
+        description="Enable transparent sheet with obstacle mode",
+    )
 
     return LaunchDescription(
         [
             scene_condition_arg,
             save_dir_arg,
             obstacle_name_arg,
+            transparent_mode_arg,
             # 1. GroundTruthListener
             Node(
                 package="data_logger",
@@ -57,7 +63,12 @@ def generate_launch_description():
                         name="scene_spawner",
                         output="screen",
                         parameters=[
-                            {"obstacle_name": LaunchConfiguration("obstacle_name")}
+                            {"obstacle_name": LaunchConfiguration("obstacle_name")},
+                            {
+                                "transparent_mode": LaunchConfiguration(
+                                    "transparent_mode"
+                                )
+                            },
                         ],
                     )
                 ],
