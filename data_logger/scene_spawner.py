@@ -246,7 +246,7 @@ class SceneSpawner(Node):
         req.initial_pose.position.z = 0.0
 
         # random orientation
-        yaw = random.uniform(0, math.pi)
+        yaw = random.uniform(-math.pi / 3, math.pi / 3)
         quat = quaternion_from_euler(0, 0, yaw)
         req.initial_pose.orientation = Quaternion(
             x=quat[0], y=quat[1], z=quat[2], w=quat[3]
