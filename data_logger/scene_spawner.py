@@ -99,7 +99,7 @@ class SceneSpawner(Node):
     def run_sequence(self):
         self.wait_for_services()
 
-        for i in range(18):  # Outer loop to iterate 18 times
+        for i in range(22):  # Outer loop to iterate 18 times
             for idx, obstacle in enumerate(self.obstacles):  # Use enumerate for index
                 self.get_logger().info(
                     f"\n🔄 Iteration {i + 1} — Spawning {obstacle}..."
