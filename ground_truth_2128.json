@@ -1,0 +1,8 @@
+{
+    "distance": 1.717540888285836,
+    "angle": 6.190116312491247,
+    "scene_condition": "dusty",
+    "obstacle_name": "Mesh",
+    "lidar": 0.7,
+    "camera": 0.7
+}
