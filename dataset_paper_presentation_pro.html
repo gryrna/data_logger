@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="slides-format" content="viewport">
+<title>Professional Conference Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<style type="text/tailwindcss">
+@theme {
+  --color-bg: #f5f7fb;
+  --color-bg-deep: #eef2f7;
+  --color-surface: #ffffff;
+  --color-text: #0f172a;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748b;
+  --color-accent-1: #0f4c81;
+  --color-accent-2: #2c7fb8;
+  --color-accent-3: #d97706;
+  --color-glass-bg: rgba(255,255,255,0.88);
+  --color-glass-border: rgba(15,23,42,0.08);
+  --font-display: 'Instrument Serif', serif;
+  --font-body: 'Inter', sans-serif;
+}
+</style>
+<style>
+:root { --color-bg:#f5f7fb; --color-text:#0f172a; --color-glass-bg:rgba(255,255,255,0.88); --color-glass-border:rgba(15,23,42,0.08); --glow-color-rgb:15,76,129; --font-body:'Inter',sans-serif; }
+*,*::before,*::after{box-sizing:border-box} html,body{background:var(--color-bg);margin:0} body{font-family:var(--font-body);color:var(--color-text);overflow:hidden;height:100vh;width:100vw}
+.deck{width:100vw;height:100vh;position:relative} .slide{position:absolute;top:0;left:0;width:100%;height:100%;background:var(--color-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transform:scale(.97);transition:opacity .6s ease,transform .6s ease;pointer-events:none;overflow:hidden} .slide.active{opacity:1;transform:scale(1);pointer-events:all} .slide>.content{position:relative;z-index:2;width:100%;max-width:1200px;padding:clamp(1.4rem,3vw,3rem)}
+.nav-controls{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;z-index:100;background:rgba(255,255,255,.82);backdrop-filter:blur(8px);padding:10px 22px;border-radius:999px;border:1px solid rgba(15,23,42,.08);box-shadow:0 10px 30px rgba(15,23,42,.08)} .nav-btn{width:38px;height:38px;border:none;background:#fff;color:#0f4c81;border-radius:999px;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 14px rgba(15,23,42,.08)} .slide-dots{display:flex;gap:8px} .dot{width:10px;height:10px;border-radius:50%;background:#cbd5e1;cursor:pointer} .dot.active{background:#0f4c81;transform:scale(1.25)} .slide-counter{font-size:.8rem;color:#64748b;min-width:46px;text-align:center}
+.reveal{opacity:0;transform:translateY(18px)} .gradient-mesh{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none} .blob{position:absolute;border-radius:50%;filter:blur(80px);animation:float 16s ease-in-out infinite} @keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(45px,-35px) scale(1.08)}}
+.card{background:var(--color-surface);border:1px solid rgba(15,23,42,.08);border-radius:24px;box-shadow:0 16px 50px rgba(15,23,42,.08)} .muted{color:#64748b} .kicker{text-transform:uppercase;letter-spacing:.18em;color:#0f4c81;font-size:.8rem;font-weight:700} .h1{font-family:'Instrument Serif',serif;font-size:clamp(2.8rem,5vw,4.6rem);line-height:.98} .h2{font-family:'Instrument Serif',serif;font-size:clamp(2.2rem,4vw,3.6rem);line-height:1.02} .lead{font-size:1.15rem;line-height:1.5;color:#334155} .metric{font-size:3rem;font-weight:800;color:#0f4c81;line-height:1} .tag{display:inline-block;padding:.35rem .7rem;border-radius:999px;background:#e8f1f8;color:#0f4c81;font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase} .imgbox{border-radius:22px;overflow:hidden;border:1px solid rgba(15,23,42,.08);box-shadow:0 18px 40px rgba(15,23,42,.12);background:#fff} .imgbox img{width:100%;height:100%;object-fit:contain;display:block} .cite{color:#0f4c81;font-weight:700} .stepnum{width:44px;height:44px;border-radius:14px;background:#0f4c81;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800} .tableish{display:grid;grid-template-columns:1.1fr .9fr .9fr;gap:12px} .tableish>div{padding:14px 16px;border-radius:16px;background:#fff;border:1px solid rgba(15,23,42,.08)}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<div class="slide active" data-slide="1">
+  <div class="gradient-mesh"><div class="blob" style="width:360px;height:360px;top:-100px;right:-60px;background:#2c7fb81f"></div><div class="blob" style="width:280px;height:280px;bottom:-80px;left:-40px;background:#d9770617"></div></div>
+  <div class="content">
+    <div class="grid grid-cols-[1.15fr_.85fr] gap-10 items-center">
+      <div>
+        <div class="kicker reveal">International Conference Presentation</div>
+        <h1 class="h1 mt-4 reveal">A Simulation Approach for Multi-Modal Sensor Dataset Generation for Autonomous Robots</h1>
+        <p class="lead mt-5 reveal">A concise research presentation focused on the dataset gap, the ROS 2–Gazebo pipeline, representative evidence, and why reliability-aware metadata matters for robust sensor fusion.</p>
+        <div class="mt-8 reveal">
+          <div class="text-xl font-semibold">Gumesh Rana • Sukhdeep Singh Dhami</div>
+          <div class="muted mt-1">Mechanical Engineering Department, NITTTR Chandigarh, India</div>
+        </div>
+      </div>
+      <div class="card p-8 reveal">
+        <div class="tag">Talk focus</div>
+        <div class="grid grid-cols-2 gap-5 mt-6">
+          <div><div class="metric">22</div><div class="muted">Obstacle classes</div></div>
+          <div><div class="metric">5</div><div class="muted">Environment modes</div></div>
+          <div><div class="metric">10 Hz</div><div class="muted">Synchronized topics</div></div>
+          <div><div class="metric">3</div><div class="muted">Core nodes</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-slide="2">
+  <div class="gradient-mesh"><div class="blob" style="width:300px;height:300px;top:-90px;right:-50px;background:#2c7fb81a"></div><div class="blob" style="width:240px;height:240px;bottom:-70px;left:-30px;background:#0f4c8114"></div></div>
+  <div class="content">
+    <div class="kicker reveal">Contents</div>
+    <h2 class="h2 mt-3 mb-8 reveal">Talk map</h2>
+    <div class="grid grid-cols-2 gap-5">
+      <div class="card p-6 reveal"><div class="font-semibold text-xl">01 Problem & motivation</div><div class="muted mt-1">Why current datasets are not enough</div></div>
+      <div class="card p-6 reveal"><div class="font-semibold text-xl">02 Contributions</div><div class="muted mt-1">What this paper adds technically</div></div>
+      <div class="card p-6 reveal"><div class="font-semibold text-xl">03 Literature review</div><div class="muted mt-1">Empirical datasets, simulators, fusion paradigms</div></div>
+      <div class="card p-6 reveal"><div class="font-semibold text-xl">04 Pipeline</div><div class="muted mt-1">Architecture and event-driven synchronization</div></div>
+      <div class="card p-6 reveal"><div class="font-semibold text-xl">05 Representative sample</div><div class="muted mt-1">RGB, LiDAR, and JSON alignment</div></div>
+      <div class="card p-6 reveal"><div class="font-semibold text-xl">06 Use cases & future work</div><div class="muted mt-1">Benchmarking, fusion, and multi-agent extension</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-slide="3">
+  <div class="gradient-mesh"><div class="blob" style="width:320px;height:320px;top:-100px;right:-60px;background:#d9770614"></div><div class="blob" style="width:260px;height:260px;bottom:-80px;left:-30px;background:#2c7fb817"></div></div>
+  <div class="content">
+    <div class="grid grid-cols-[1fr_.95fr] gap-8 items-center">
+      <div>
+        <div class="kicker reveal">Introduction</div>
+        <h2 class="h2 mt-3 reveal">The real problem is not model design. It is missing data coverage.</h2>
+        <p class="lead mt-5 reveal">Autonomous robots require perception systems that remain dependable in dynamic, unstructured, and safety-critical conditions, yet the training and validation data available for such scenarios remains narrow and difficult to control <span class="cite">[1–3]</span>.</p>
+        <div class="grid grid-cols-1 gap-4 mt-7">
+          <div class="card p-5 reveal"><div class="font-semibold">Why real-world collection falls short</div><div class="muted mt-2">Rare failures such as fog, dust, low light, and transparent obstacles are costly, risky, and hard to reproduce systematically <span class="cite">[4–6]</span>.</div></div>
+          <div class="card p-5 reveal"><div class="font-semibold">Why a synthetic pipeline matters</div><div class="muted mt-2">Simulation gives repeatability, parameter control, and synchronized ground truth, which are essential for benchmarking sensor fusion under edge conditions <span class="cite">[14–20]</span>.</div></div>
+        </div>
+      </div>
+      <div class="card p-8 reveal">
+        <div class="tag">Research gap</div>
+        <div class="mt-5 space-y-6">
+          <div><div class="font-semibold text-lg">Existing public datasets</div><div class="muted">Strong for general perception, weak for controllable weather and adverse-condition stress testing <span class="cite">[7–13]</span>.</div></div>
+          <div><div class="font-semibold text-lg">Needed by fusion research</div><div class="muted">Aligned RGB, LiDAR, exact geometry, scene labels, and sensor reliability in a single sample.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-slide="4">
+  <div class="gradient-mesh"><div class="blob" style="width:280px;height:280px;top:-70px;right:-50px;background:#2c7fb81a"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;left:-30px;background:#d9770614"></div></div>
+  <div class="content">
+    <div class="kicker reveal">Contribution</div>
+    <h2 class="h2 mt-3 mb-8 reveal">Four concrete takeaways, not four copied paragraphs</h2>
+    <div class="grid grid-cols-2 gap-5">
+      <div class="card p-6 reveal"><div class="tag">C1</div><div class="font-semibold text-2xl mt-4">Event-driven synchronized logging</div><div class="muted mt-3">The pipeline prevents race conditions by enforcing a causal sequence: spawn, stabilize, compute ground truth, then serialize.</div></div>
+      <div class="card p-6 reveal"><div class="tag">C2</div><div class="font-semibold text-2xl mt-4">Controlled adverse conditions</div><div class="muted mt-3">Dust, fog, low light, and transparent materials are injected deliberately to create interpretable failure cases.</div></div>
+      <div class="card p-6 reveal"><div class="tag">C3</div><div class="font-semibold text-2xl mt-4">Reliability-aware annotations</div><div class="muted mt-3">Each sample includes scene condition, geometry, and sensor-confidence cues that can supervise adaptive fusion.</div></div>
+      <div class="card p-6 reveal"><div class="tag">C4</div><div class="font-semibold text-2xl mt-4">ROS 2 native extensibility</div><div class="muted mt-3">The architecture is modular enough to swap sensors, worlds, or annotation logic without rewriting the whole stack.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-slide="5">
+  <div class="gradient-mesh"><div class="blob" style="width:280px;height:280px;top:-70px;right:-50px;background:#0f4c8113"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;left:-30px;background:#2c7fb816"></div></div>
+  <div class="content">
+    <div class="kicker reveal">Literature review</div>
+    <h2 class="h2 mt-3 mb-8 reveal">Where this paper sits in the research landscape</h2>
+    <div class="tableish reveal">
+      <div class="font-semibold text-lg bg-[#edf4fb]">Category</div>
+      <div class="font-semibold text-lg bg-[#edf4fb]">Strength</div>
+      <div class="font-semibold text-lg bg-[#edf4fb]">Limitation addressed here</div>
+      <div>Real-world benchmarks <span class="cite">[7–13]</span></div>
+      <div>Established perception baselines</div>
+      <div>Limited controllability and weak coverage of rare adverse events</div>
+      <div>High-fidelity simulators <span class="cite">[14–20]</span></div>
+      <div>Scalable synthetic generation</div>
+      <div>Often domain-specific, heavy, or less convenient for ROS 2 native experimentation</div>
+      <div>Fusion literature <span class="cite">[1–3]</span></div>
+      <div>Early, mid, and late fusion formulations</div>
+      <div>Needs datasets with explicit modality-failure context and synchronized metadata</div>
+    </div>
+    <div class="card p-6 mt-6 reveal"><span class="font-semibold">Positioning statement:</span> this work is not proposing a new fusion network; it is building the missing experimental substrate that robust fusion methods need.</div>
+  </div>
+</div>
+
+<div class="slide" data-slide="6">
+  <div class="gradient-mesh"><div class="blob" style="width:300px;height:300px;top:-90px;right:-50px;background:#2c7fb81b"></div><div class="blob" style="width:260px;height:260px;bottom:-80px;left:-40px;background:#d9770615"></div></div>
+  <div class="content">
+    <div class="kicker reveal">Pipeline</div>
+    <h2 class="h2 mt-3 mb-6 reveal">Three nodes, one deterministic data path</h2>
+    <div class="grid grid-cols-[1.12fr_.88fr] gap-8 items-center">
+      <div class="imgbox h-[500px] reveal"><img src="pipeline.jpg" alt="Pipeline diagram"></div>
+      <div class="space-y-4">
+        <div class="card p-5 reveal"><div class="font-semibold text-xl">Scene Spawner</div><div class="muted mt-2">Chooses an object class, range band, pose, and environment condition; then issues the sampling trigger.</div></div>
+        <div class="card p-5 reveal"><div class="font-semibold text-xl">Ground Truth Listener</div><div class="muted mt-2">Reads model state and computes obstacle distance, angle, and semantic labels before data can be saved.</div></div>
+        <div class="card p-5 reveal"><div class="font-semibold text-xl">Data Logger</div><div class="muted mt-2">Serializes one synchronized triplet: image, LiDAR array, and JSON metadata.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-slide="7">
+  <div class="gradient-mesh"><div class="blob" style="width:280px;height:280px;top:-80px;right:-50px;background:#d9770615"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;left:-30px;background:#2c7fb818"></div></div>
+  <div class="content">
+    <div class="kicker reveal">Pipeline steps</div>
+    <h2 class="h2 mt-3 mb-8 reveal">What happens in one sample cycle</h2>
+    <div class="grid grid-cols-5 gap-4">
+      <div class="card p-5 reveal"><div class="stepnum">1</div><div class="font-semibold text-lg mt-4">Spawn</div><div class="muted mt-2">Instantiate one of 22 obstacles within the configured distance band.</div></div>
+      <div class="card p-5 reveal"><div class="stepnum">2</div><div class="font-semibold text-lg mt-4">Settle</div><div class="muted mt-2">Wait 10 seconds so Gazebo physics stabilizes before capture.</div></div>
+      <div class="card p-5 reveal"><div class="stepnum">3</div><div class="font-semibold text-lg mt-4">Compute GT</div><div class="muted mt-2">Use model states to derive distance, angle, and scene labels.</div></div>
+      <div class="card p-5 reveal"><div class="stepnum">4</div><div class="font-semibold text-lg mt-4">Sync sensors</div><div class="muted mt-2">Camera and scan topics remain locked to the Gazebo clock at 10 Hz.</div></div>
+      <div class="card p-5 reveal"><div class="stepnum">5</div><div class="font-semibold text-lg mt-4">Serialize</div><div class="muted mt-2">Write exactly one JPEG, one LiDAR array, and one JSON file.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-slide="8">
+  <div class="gradient-mesh"><div class="blob" style="width:300px;height:300px;top:-100px;right:-60px;background:#0f4c8113"></div><div class="blob" style="width:260px;height:260px;bottom:-70px;left:-30px;background:#d9770617"></div></div>
+  <div class="content">
+    <div class="grid grid-cols-[.95fr_1.05fr] gap-8 items-center">
+      <div class="imgbox h-[480px] reveal"><img src="dusty_Gazebo-5.jpg" alt="Dusty Gazebo environment"></div>
+      <div>
+        <div class="kicker reveal">Environment design</div>
+        <h2 class="h2 mt-3 reveal">Failure modes are engineered on purpose</h2>
+        <div class="grid grid-cols-1 gap-4 mt-7">
+          <div class="card p-5 reveal"><div class="font-semibold text-xl">Dust</div><div class="muted mt-2">Introduces strong visual clutter and perturbations in ranging, useful for robustness tests.</div></div>
+          <div class="card p-5 reveal"><div class="font-semibold text-xl">Fog / low light</div><div class="muted mt-2">Stress-tests sensing when visibility collapses or attenuation increases.</div></div>
+          <div class="card p-5 reveal"><div class="font-semibold text-xl">Transparent obstacles</div><div class="muted mt-2">Creates a high-value contradiction: the camera sees an object edge while LiDAR may report free space.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-slide="9">
+  <div class="gradient-mesh"><div class="blob" style="width:280px;height:280px;top:-80px;right:-50px;background:#2c7fb818"></div><div class="blob" style="width:250px;height:250px;bottom:-70px;left:-30px;background:#d9770614"></div></div>
+  <div class="content">
+    <div class="kicker reveal">Representative sample</div>
+    <h2 class="h2 mt-3 mb-6 reveal">One synchronized evidence packet</h2>
+    <div class="grid grid-cols-[1fr_1fr_.8fr] gap-6 items-start">
+      <div class="imgbox h-[300px] reveal"><img src="image_2128-2.jpg" alt="RGB sample"></div>
+      <div class="imgbox h-[300px] reveal"><img src="lidar_line_plot_2128-4.jpg" alt="LiDAR plot"></div>
+      <div class="card p-6 reveal">
+        <div class="tag">JSON metadata</div>
+        <div class="mt-5 space-y-3 text-[1rem]">
+          <div><span class="font-semibold">Obstacle</span><br>Mesh</div>
+          <div><span class="font-semibold">Scene</span><br>dusty</div>
+          <div><span class="font-semibold">Distance</span><br>1.717540888285836</div>
+          <div><span class="font-semibold">Angle</span><br>6.190116312491247</div>
+        </div>
+      </div>
+    </div>
+    <div class="card p-5 mt-5 reveal">Presentation message: the contribution is not the individual image or scan; it is the precise synchronization between perception, geometry, and context.</div>
+  </div>
+</div>
+
+<div class="slide" data-slide="10">
+  <div class="gradient-mesh"><div class="blob" style="width:300px;height:300px;top:-90px;right:-50px;background:#d9770613"></div><div class="blob" style="width:260px;height:260px;bottom:-70px;left:-30px;background:#2c7fb816"></div></div>
+  <div class="content">
+    <div class="kicker reveal">Use cases</div>
+    <h2 class="h2 mt-3 mb-8 reveal">How researchers can actually use this dataset</h2>
+    <div class="grid grid-cols-2 gap-5">
+      <div class="card p-6 reveal"><div class="font-semibold text-2xl">Camera-only regression baseline</div><div class="muted mt-3">Use the image tensor to predict distance with ResNet-34, Smooth L1 loss, AdamW, and cosine annealing over 100 epochs.</div></div>
+      <div class="card p-6 reveal"><div class="font-semibold text-2xl">LIDAR-only baseline</div><div class="muted mt-3">Train a compact MLP directly on the 1 × 180 dense LiDAR vector without voxelization overhead.</div></div>
+      <div class="card p-6 reveal"><div class="font-semibold text-2xl">Reliability-aware fusion</div><div class="muted mt-3">Use scene labels and sensor reliability tags to modulate attention weights when one modality degrades.</div></div>
+      <div class="card p-6 reveal"><div class="font-semibold text-2xl">Ablation studies</div><div class="muted mt-3">Hold object pose constant and vary only weather or material properties to isolate failure mechanisms.</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-slide="11">
+  <div class="gradient-mesh"><div class="blob" style="width:280px;height:280px;top:-80px;right:-50px;background:#2c7fb818"></div><div class="blob" style="width:240px;height:240px;bottom:-60px;left:-30px;background:#0f4c8114"></div></div>
+  <div class="content">
+    <div class="kicker reveal">Future work</div>
+    <h2 class="h2 mt-3 mb-8 reveal">Natural next step: from one robot to many</h2>
+    <div class="grid grid-cols-3 gap-5">
+      <div class="card p-6 reveal"><div class="font-semibold text-xl">Decentralized swarms</div><div class="muted mt-3">Extend the logger from a single centralized agent to distributed robots communicating through ROS 2 DDS.</div></div>
+      <div class="card p-6 reveal"><div class="font-semibold text-xl">Relative ground truth</div><div class="muted mt-3">Replace omniscient global labels with per-agent projections for collaborative perception and C-SLAM.</div></div>
+      <div class="card p-6 reveal"><div class="font-semibold text-xl">Asynchronous capture logic</div><div class="muted mt-3">Avoid burst traffic by letting each agent log only when local entropy or motion thresholds justify capture.</div></div>
+    </div>
+    <div class="card p-6 mt-6 reveal"><span class="font-semibold">Big-picture value:</span> the same dataset-generation logic can evolve into a testbed for collaborative robotics and V2X-style perception research.</div>
+  </div>
+</div>
+
+<div class="slide" data-slide="12">
+  <div class="gradient-mesh"><div class="blob" style="width:320px;height:320px;top:-100px;right:-60px;background:#2c7fb81a"></div><div class="blob" style="width:260px;height:260px;bottom:-80px;left:-30px;background:#d9770615"></div></div>
+  <div class="content">
+    <div class="grid grid-cols-[1fr_.92fr] gap-8 items-center">
+      <div>
+        <div class="kicker reveal">Conclusion</div>
+        <h2 class="h2 mt-3 reveal">The paper’s message in one slide</h2>
+        <div class="grid grid-cols-1 gap-4 mt-7">
+          <div class="card p-5 reveal"><div class="font-semibold text-xl">The contribution</div><div class="muted mt-2">A reproducible ROS 2 + Gazebo pipeline for synchronized RGB, LiDAR, and ground-truth dataset generation.</div></div>
+          <div class="card p-5 reveal"><div class="font-semibold text-xl">The differentiator</div><div class="muted mt-2">Reliability-aware metadata makes the dataset directly useful for context-aware and Bayesian fusion research.</div></div>
+          <div class="card p-5 reveal"><div class="font-semibold text-xl">The impact</div><div class="muted mt-2">Researchers can benchmark perception methods against repeatable, hard edge cases without hazardous real-world collection.</div></div>
+        </div>
+      </div>
+      <div class="card p-8 reveal">
+        <div class="tag">Open-source demo</div>
+        <div class="mt-6 text-lg font-semibold">Repository</div>
+        <div class="muted break-all mt-2">https://github.com/gryrna/data_logger/tree/day2/data_logger</div>
+        <div class="mt-8 text-lg font-semibold">Live demo story</div>
+        <div class="muted mt-2">Spawn one object → wait for stabilization → show camera + LiDAR + JSON → explain synchronized capture.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="slide" data-slide="13">
+  <div class="gradient-mesh"><div class="blob" style="width:320px;height:320px;top:-100px;right:-50px;background:#2c7fb81c"></div><div class="blob" style="width:280px;height:280px;bottom:-80px;left:-40px;background:#d9770618"></div></div>
+  <div class="content text-center">
+    <div class="kicker reveal">Discussion</div>
+    <h2 class="h1 mt-4 reveal">Thank you</h2>
+    <p class="lead mt-5 reveal">Questions, feedback, and live walkthrough of the ROS 2 + Gazebo setup</p>
+  </div>
+</div>
+
+</div>
+<div class="nav-controls"><button class="nav-btn" onclick="changeSlide(-1)">&#8249;</button><div class="slide-dots" id="dots"></div><button class="nav-btn" onclick="changeSlide(1)">&#8250;</button><span class="slide-counter" id="counter">1 / 13</span></div>
+<script>
+let current=1; const total=document.querySelectorAll('.slide').length; const dots=document.getElementById('dots'); const counter=document.getElementById('counter');
+for(let i=1;i<=total;i++){const d=document.createElement('div'); d.className='dot'+(i===1?' active':''); d.onclick=()=>goToSlide(i); dots.appendChild(d);}
+function goToSlide(n){document.querySelector('.slide.active')?.classList.remove('active'); const next=document.querySelector(`.slide[data-slide="${n}"]`); if(next){next.classList.add('active'); animateSlide(next);} current=n; updateNav();}
+function changeSlide(dir){let n=current+dir; if(n<1)n=total; if(n>total)n=1; goToSlide(n);}
+function updateNav(){document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i+1===current)); counter.textContent=current+' / '+total;}
+document.addEventListener('keydown', (e)=>{if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();changeSlide(1)} if(e.key==='ArrowLeft'){e.preventDefault();changeSlide(-1)}});
+function animateSlide(slide){slide.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transition='none'; el.style.opacity='0'; el.style.transform='translateY(18px)'; el.offsetHeight; const delay=i*0.08; el.style.transition=`opacity .35s ease ${delay}s, transform .35s ease ${delay}s`; el.style.opacity='1'; el.style.transform='translateY(0)'; });}
+animateSlide(document.querySelector('.slide.active'));
+</script>
+</body>
+</html>
